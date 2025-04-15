@@ -88,49 +88,44 @@
 </main>
 
   <script>
+  // Hàm thêm sản phẩm vào giỏ hàng
+  function addToCart() {
+    const product = JSON.parse(localStorage.getItem('selectedProduct'));
 
-
-
-function addToCart() {
-  const name = getQueryParam("name");
-  const img = getQueryParam("img");
-  const price = getQueryParam("price");
-  const size = document.getElementById("size").value; // 👉 Lấy size được chọn
-
-  const product = { name, img, price, size }; // 👉 Thêm size vào sản phẩm
-
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push(product);
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  alert("Đã thêm vào giỏ hàng với size: " + size + "!");
-}
-
-
-
-    // Hàm lấy dữ liệu từ URL
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
+    if (!product) {
+      alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+      return;
     }
 
-    // Khi trang load xong thì gán dữ liệu lên giao diện
-    document.addEventListener("DOMContentLoaded", () => {
-  const product = JSON.parse(localStorage.getItem('selectedProduct'));
+    const size = document.getElementById("size").value;
+    product.size = size; // ➕ Gán size được chọn vào sản phẩm
 
-  if (product) {
-    document.querySelector(".product-details h1").textContent = product.name || "Không có tên sản phẩm";
-    document.querySelector(".product-image img").src = product.img || "img/default.jpg";
-    document.querySelector(".product-price").textContent = "Giá: " + (product.price ? product.price + " VND" : "Liên hệ");
-    document.querySelector(".product-description p").textContent = product.desc || "Không có mô tả";
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-    document.getElementById("materialText").textContent = "Chất liệu: " + (product.material || "Đang cập nhật");
-    document.getElementById("colorText").textContent = "Màu sắc: " + (product.color || "Đang cập nhật");
-    document.getElementById("styleText").textContent = "Kiểu dáng: " + (product.style || "Đang cập nhật");
+    alert("Đã thêm vào giỏ hàng với size: " + size + "!");
   }
-});
 
-  </script>
+  // Khi trang load xong, hiển thị thông tin sản phẩm từ localStorage
+  document.addEventListener("DOMContentLoaded", () => {
+    const product = JSON.parse(localStorage.getItem('selectedProduct'));
+
+    if (product) {
+      document.querySelector(".product-details h1").textContent = product.name || "Không có tên sản phẩm";
+      document.querySelector(".product-image img").src = product.img || "img/default.jpg";
+      document.querySelector(".product-price").textContent = "Giá: " + (product.price ? product.price + " VND" : "Liên hệ");
+      document.querySelector(".product-description p").textContent = product.desc || "Không có mô tả";
+
+      document.getElementById("materialText").textContent = "Chất liệu: " + (product.material || "Đang cập nhật");
+      document.getElementById("colorText").textContent = "Màu sắc: " + (product.color || "Đang cập nhật");
+      document.getElementById("styleText").textContent = "Kiểu dáng: " + (product.style || "Đang cập nhật");
+    } else {
+      alert("Không tìm thấy dữ liệu sản phẩm. Vui lòng quay lại trang sản phẩm.");
+      window.location.href = "Sanpham.html";
+    }
+  });
+</script>
 
 </body>
 
